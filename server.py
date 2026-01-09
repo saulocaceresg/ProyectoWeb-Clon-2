@@ -14,7 +14,7 @@ except ImportError as e:
     db = None
 
 # CONFIGURACIÓN
-PORT = 8000
+PORT = int(os.environ.get("PORT", 8000))
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 PUBLIC_DIR = os.path.join(ROOT_DIR, 'public_html')
 TEMPLATES_DIR = os.path.join(PUBLIC_DIR, 'templates')
@@ -122,6 +122,6 @@ class BibliotecaHandler(http.server.BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     os.chdir(ROOT_DIR)
-    print(f"Servidor corriendo en http://localhost:{PORT}")
-    with socketserver.TCPServer(("", PORT), BibliotecaHandler) as httpd:
+    print(f"Servidor corriendo en puerto {PORT}")
+    with socketserver.TCPServer(("0.0.0.0", PORT), BibliotecaHandler) as httpd:
         httpd.serve_forever()
