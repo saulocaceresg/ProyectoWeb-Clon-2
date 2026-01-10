@@ -123,5 +123,5 @@ class BibliotecaHandler(http.server.BaseHTTPRequestHandler):
 if __name__ == "__main__":
     os.chdir(ROOT_DIR)
     print(f"Servidor corriendo en puerto {PORT}")
-    with socketserver.TCPServer(("0.0.0.0", PORT), BibliotecaHandler) as httpd:
+    with socketserver.TCPServer(("", PORT), BibliotecaHandler) as httpd:
         httpd.serve_forever()
