@@ -89,3 +89,18 @@ def verificar_usuario(email, password):
         cursor.close()
         conn.close()
     return usuario
+
+def guardar_prestamo(id_libro, id_usuario):
+    conn = crear_conexion()
+    if conn and conn.is_connected():
+        cursor = conn.cursor()
+        query = """
+            INSERT INTO prestamos (id_libro, id_usuario, fecha_prestamo)
+            VALUES (%s, %s, NOW())
+        """
+        cursor.execute(query, (id_libro, id_usuario))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return True
+    return False
