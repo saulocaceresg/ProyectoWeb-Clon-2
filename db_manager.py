@@ -93,14 +93,28 @@ def verificar_usuario(email, password):
 def guardar_prestamo(id_libro, id_usuario):
     conn = crear_conexion()
     if conn and conn.is_connected():
-        cursor = conn.cursor()
-        query = """
-            INSERT INTO prestamos (id_libro, id_usuario, fecha_prestamo)
-            VALUES (%s, %s, NOW())
-        """
-        cursor.execute(query, (id_libro, id_usuario))
-        conn.commit()
-        cursor.close()
-        conn.close()
-        return True
+        try:
+            cursor = conn.cursor()
+
+            # Insertar préstamo
+            cursor.execute(
+                "INSERT INTO prestamos (id_libro, id_usuario, fecha_prestamo) VALUES (%s, %s, NOW())",
+                (id_libro, id_usuario)
+            )
+
+            # Marcar libro como no disponible
+            cursor.execute(
+                "UPDATE libros SET disponible = 0 WHERE id = %s",
+                (id_libro,)
+            )
+
+            conn.commit()
+            return True
+        except Error as e:
+            print(f"Error al registrar préstamo: {e}")
+            return False
+        finally:
+            cursor.close()
+            conn.close()
     return False
+

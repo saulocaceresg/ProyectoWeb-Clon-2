@@ -90,10 +90,12 @@ class BibliotecaHandler(http.server.BaseHTTPRequestHandler):
 
             elif self.path == '/api/prestar':
                 id_libro = datos.get('id_libro')
-                if db.prestar_libro(id_libro):
-                    self.responder_json({"mensaje": "Libro prestado con exito"})
+                id_usuario = datos.get('id_usuario', 1)  # temporal
+
+                if db.guardar_prestamo(id_libro, id_usuario):
+                    self.responder_json({"mensaje": "Préstamo registrado con éxito"})
                 else:
-                    self.send_error(500, "Error al prestar libro")
+                    self.send_error(500, "No se pudo registrar el préstamo")
             
             else:
                 self.send_error(404, "Ruta POST desconocida")

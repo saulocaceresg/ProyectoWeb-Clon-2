@@ -205,3 +205,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
+function prestarLibro(idLibro) {
+    fetch('/api/prestar', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            id_libro: idLibro
+            // id_usuario si lo manejan
+        })
+    })
+    .then(res => {
+        if (!res.ok) throw new Error("Error en el préstamo");
+        return res.json();
+    })
+    .then(data => {
+        alert(data.mensaje);
+        location.reload();
+    })
+    .catch(err => {
+        console.error(err);
+        alert("No se pudo realizar el préstamo");
+    });
+}
